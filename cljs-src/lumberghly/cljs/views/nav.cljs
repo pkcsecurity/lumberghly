@@ -15,12 +15,12 @@
             :width "35px"}}])
 
 (defn nav-right []
-  [:div.flex.items-center.dark-gray.right
-   {:style {:float "right"}}
+  [:div.p2.flex.justify-center.items-center.dark-gray.right
    [:div.mx1
     [avatar false]]])
 
 (defn body []
   [:div.s1.bg-white.flex.justify-between.items-center.dark-gray.z1
    {:style {:height nav-height}}
+   [:div.p2.left ]
    [nav-right]])
