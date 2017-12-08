@@ -1,0 +1,30 @@
+/target
+/classes
+/checkouts
+pom.xml
+pom.xml.asc
+*.jar
+*.class
+/.lein-*
+/.nrepl-port
+.hgignore
+.hg/
+/static/dev
+/static/development
+/static/release
+properties.edn
+*.swp
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+.terraform/
+
+*.orig
+
+# nginx
+/nginx/access.log
