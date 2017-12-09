@@ -9,6 +9,11 @@
   :uberjar-name "lumberghly.org-standalone.jar"
   :min-lein-version "2.8.0"
   :dependencies [[org.clojure/clojure "1.8.0"]
+                 [http-kit "2.2.0"]
+                 [org.clojure/data.json "0.2.6"]
+                 [org.clojure/java.jdbc "0.7.3"]
+                 [org.postgresql/postgresql "42.1.4"]
+                 [clj-time "0.14.2"]
                  ; cljx deps
                  [org.clojure/clojurescript "LATEST"]
                  [hiccup "LATEST"]
