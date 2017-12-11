@@ -52,12 +52,12 @@
               :email email}
              ["id = ?" person-id])
     (upsert! pg-db :actions
-               {:id (:id obj)
-                :timestamp (max (coerce/to-long updated_at) (coerce/to-long created_at))
-                :action (clojure.string/upper-case type)
-                :project_id project-id
-                :person_id person-id}
-              ["id = ?" (:id obj)])
+             {:id (:id obj)
+              :timestamp (max (coerce/to-long updated_at) (coerce/to-long created_at))
+              :action (clojure.string/upper-case type)
+              :project_id project-id
+              :person_id person-id}
+             ["id = ?" (:id obj)])
     (upsert! pg-db :personsprojects
              {:project_id project-id
               :person_id person-id}
@@ -103,5 +103,26 @@
       (insert-project p)
       (crawl-message-board p))))
 
+(defn get-n-days-actions [n]
+  (let [now (t/now)
+        then (t/minus (t/now) (t/days n))
+        res (jdbc/query pg-db ["SELECT * from actions INNER JOIN persons on actions.person_id=persons.id INNER JOIN projects on actions.project_id=projects.id WHERE timestamp >= ?" (coerce/to-long then)])]
+    (loop [[hd & tl] res
+           acc {}]
+      (let [k (:name hd)
+            v hd]
+        (if tl
+          (recur tl (assoc acc k (conj (get acc k []) v)))
+          acc)))))
+
+(defn get-stats [m]
+  (let [people (keys m)]
+    (into
+      {}
+      (for [[person l] m]
+        [person (count l)]))))
+
 (defn -main [& args]
-  (println (get-token)))
+  #_(println (get-n-days-actions (int (first args))))
+  (doseq [x (reverse (sort-by val (get-stats (get-n-days-actions (int (first args))))))]
+    (println (str (first x) ":") (second x))))
